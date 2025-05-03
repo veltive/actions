@@ -1,0 +1,41 @@
+name: 'VS Code Extension Release'
+description: 'Packages and releases a VS Code extension'
+runs:
+  using: "composite"
+  steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+
+    - name: Cache Yarn dependencies
+      uses: actions/cache@v3
+      with:
+        path: |
+          **/node_modules
+          **/.yarn/cache
+        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-yarn-
+
+    - name: Install dependencies with Yarn
+      shell: bash
+      run: yarn install --frozen-lockfile
+
+    - name: Install vsce
+      shell: bash
+      run: yarn global add vsce
+
+    - name: Package extension
+      shell: bash
+      run: vsce package
+
+    - name: Upload to GitHub Release
+      uses: softprops/action-gh-release@v2
+      with:
+        files: '*.vsix'
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
