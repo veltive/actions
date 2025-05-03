@@ -11,6 +11,25 @@ runs:
       with:
         node-version: '20'
 
+    # Extract version from GitHub ref
+    - name: Extract version from tag
+      shell: bash
+      run: |
+        # Extract version from GitHub ref (e.g., refs/tags/v1.2.3 -> 1.2.3)
+        VERSION=${GITHUB_REF#refs/tags/}
+        VERSION=${VERSION#v}
+        echo "RELEASE_VERSION=$VERSION" >> $GITHUB_ENV
+        echo "Using version: $VERSION"
+
+    # Update version in package.json
+    - name: Update version in package.json
+      shell: bash
+      run: |
+        # Use jq to update the version field with the GitHub tag version
+        jq ".version = \"$RELEASE_VERSION\"" package.json > package.json.tmp
+        mv package.json.tmp package.json
+        echo "Updated package.json to version $RELEASE_VERSION"
+
     - name: Cache Yarn dependencies
       uses: actions/cache@v3
       with:
