@@ -62,3 +62,8 @@ runs:
       with:
         files: '*.vsix'
         token: ${{ github.token }}
+        draft: false
+        prerelease: false
+        fail_on_unmatched_files: true
+        append_body: false
+        replace_artifacts: true
