@@ -48,6 +48,11 @@ runs:
       shell: bash
       run: yarn global add vsce
 
+    # Clean up any existing .vsix files before packaging
+    - name: Clean up existing .vsix files
+      shell: bash
+      run: rm -f *.vsix
+
     - name: Package extension
       shell: bash
       run: vsce package
