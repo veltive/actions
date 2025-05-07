@@ -24,7 +24,7 @@ runs:
     - name: Debug secrets
       shell: bash
       run: |
-        echo "DOCKER_USER: ${DOCKER_USER:0:2}****"
+        echo "DOCKER_USER: ${DOCKER_USER}"
         echo "DOCKER_PASSWORD: ${#DOCKER_PASSWORD} characters"
 
     - name: Login to Docker Hub
