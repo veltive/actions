@@ -32,7 +32,7 @@ runs:
       with:
         context: .
         push: true
-        tags: ${{ inputs.image }}:${VERSION}
+        tags: ${{ inputs.image }}:${{ env.RELEASE_VERSION }}
 
     - name: Upload to GitHub Release
       uses: softprops/action-gh-release@v2
